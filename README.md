@@ -61,7 +61,7 @@ c) kill all script and run<br>
 	- README.txt
 
 <br><br>
->##3) Introduce the Task Format
+>##3) Introduce the Task Config
 
 such as the task config:  ```cat ./task/comment```
 
