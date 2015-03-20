@@ -48,8 +48,8 @@ b) direct run the task list<br>
 c) kill all script and run<br>
 
 
-<br>
->##2) Structure is introduced
+<br><br>
+>##2) Introduce Structure
 
 	- main.sh   main
 	- task.sh
@@ -59,4 +59,26 @@ c) kill all script and run<br>
 	- task		folder, task list
 	- pipe		folder, pipe list
 	- README.txt
+
+<br><br>
+>##3) Introduce the Task Format
+
+such as the task config:  ```cat ./task/comment```
+
+> \#[Script Type]<br>
+ itype=php<br><br>
+\#[program absloute path]<br>
+ipath=/export/home/www/testProject/2.php<br><br>
+\#[start record]<br>
+istart=0<br><br>
+\#[end record]<br>
+iend=500000<br><br>
+\#[step]<br>
+istep=1000<br><br>
+\#[run thread]<br>
+ithread=3
+
+<br><br><br>
+###That all, Thank you !
+<br><br><br>
 
