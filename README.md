@@ -21,33 +21,32 @@
 正常解决方法是我们需要在cli 终端下分批次执行，很麻烦。用此脚本我们配置好文件后，可以实现自动化执行。
 
 <br>
-##Notice！
+#Notice！
 
 
 First Create the necessary folders:
 - runtime
 - pipe
 
+<br>
+>##1）run the script
 
-1）run the script
+`$ /bin/bash main.sh`
 
-$ /bin/bash main.sh
+Output String：
 
-cat <<output
+>=============================================<br>
+Auto task System<br>
+=============================================<br>
+Welcome to auto task, Please Choice a options:<br>
+--------------------------------------------------------------------------<br>
+a) kill all the running script<br>
+b) direct run the task list<br>
+c) kill all script and run<br>
 
-====================================
-	Auto task System
-====================================
 
-Welcome to auto task, Please Choice a options:
- ------------------
- a) kill all the running script
- b) direct run the task list
- c) kill all script and run
-
-output
-
-2) Structure is introduced
+<br>
+>##2) Structure is introduced
 
 	- main.sh   main
 	- task.sh
