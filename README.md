@@ -4,6 +4,8 @@
 
 **@功能介绍：**Shell + 堵塞管道的原理可以实现：多任务、多进程、无人值守自动执行。
 
+**@author** wangcun
+
 **@email** 1541231755@qq.com
 
 **@date** 2015/03/16 - 03/20
@@ -11,10 +13,11 @@
 **@version** 2.2
 
 比如：同时有两个需要批量重置数据库内容的任务
-1）更新新闻表每条记录的缩略图
-2）更新评论表的所有用户的用户信息
+- 1）更新新闻表每条记录的缩略图
+- 2）更新评论表的所有用户的用户信息
 
-面临的问题是：
+<br>
+我们需要考虑的问题是：
  - 库很庞大，大概500W条记录
  - 查询时不能查太多，否则会锁表
 
@@ -25,13 +28,13 @@
 
 
 First Create the necessary folders:
-- `runtime`  to save all the run logs;
+- ```runtime```  to save all the run logs;
 - `pipe`     to save the task pipes;
 
 <br>
 >##1）run the script
 
-`$ /bin/bash main.sh`
+```$ /bin/bash main.sh```
 
 Output String：
 
