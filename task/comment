@@ -1,0 +1,17 @@
+#[Script Type]
+itype=php
+
+#[program absloute path]
+ipath=/export/home/www/testProject/1.php
+
+#[start record]
+istart=0
+
+#[end record]
+iend=1000000
+
+#[step]
+istep=1000
+
+#[run thread]
+ithread=5
