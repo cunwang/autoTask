@@ -1,6 +1,11 @@
 # autoTask
 欢迎使用自动任务队列系统！
 
+First Create the necessary folders:
+- runtime
+- pipe
+
+
 1）run the script
 
 $ /bin/bash main.sh
