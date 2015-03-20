@@ -25,8 +25,8 @@
 
 
 First Create the necessary folders:
-- runtime
-- pipe
+- `runtime`  to save all the run logs;
+- `pipe`     to save the task pipes;
 
 <br>
 >##1）run the script
