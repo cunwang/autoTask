@@ -21,7 +21,21 @@
  - 库很庞大，大概500W条记录
  - 查询时不能查太多，否则会锁表
 
-正常解决方法是我们需要在cli 终端下分批次执行，很麻烦。用此脚本我们配置好文件后，可以实现自动化执行。
+正常解决方法是我们需要在cli 终端下分批次执行，很麻烦。用此脚本我们配置好文件后，可以实现自动化执行。<br>
+##执行效果
+
+>``The Nums is :14000  15000`` <br>
+``The Nums is :15000  16000 ``<br>
+SELECT id,content FROM news_info WHERE output_status=1 AND content!='' AND (`id` > 14000 AND `id` < 1000) ORDER BY id ASC<br>
+SELECT id,content FROM news_info WHERE output_status=1 AND content!='' AND (`id` > 15000 AND `id` < 1000) ORDER BY id ASC<br><br>
+``The Nums is :140000  150000``<br>
+``The Nums is :150000  160000``<br>
+SELECT id,content FROM comment WHERE output_status=1 AND content!='' AND (`id` > 140000 AND `id` < 10000) ORDER BY id ASC<br>
+SELECT id,content FROM comment WHERE output_status=1 AND content!='' AND (`id` > 150000 AND `id` < 10000) ORDER BY id ASC<br>
+......<br>
+......<br>
+
+
 
 <br>
 #Notice！
