@@ -25,7 +25,7 @@ function parseParam()
 }
 . ./pub_func
 trap 'debug $LINENO' ERR
-free pipe
+#free pipe
 cat $TaskPipe 
 
 [ $# -ne 3 ] && throwANDexit "pararm is error!";
