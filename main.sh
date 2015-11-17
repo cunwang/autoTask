@@ -121,11 +121,15 @@ function run_task ()
 		iexit
 	} &
 }
+
 function main()
 {
 	choice;
 }
 
+#trap bug
 trap 'debug $LINENO' ERR
 trap 'debug $LINENO' EXIT
+
+#start
 main
