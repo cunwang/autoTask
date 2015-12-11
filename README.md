@@ -1,75 +1,15 @@
-#Auto task
-### 欢迎使用自动任务队列系统！
+Auto task是一个自动化的Shell脚本，工作原理就是利用堵塞管道实现多任务同时处理。
 
+###功能介绍
 
-**@功能介绍：**Shell + 堵塞管道的原理实现。
-- 支持多任务
-- 多进程
-- 可配置间歇
-- 每次查询记录条数
-- 多种类型脚本，目前仅有Shell 和PHP两种，后期可扩展。
-- 无人值守自动执行
-
-**@author** wangcun
-
-**@email** 1541231755@qq.com
-
-**@date** 2015/03/16 - 03/20
-
-**@version** 2.2
-
-比如：同时有两个需要批量重置数据库内容的任务
-- 1）更新新闻表每条记录的缩略图
-- 2）更新评论表的所有用户的用户信息
-
-<br>
-我们需要考虑的问题是：
- - 库很庞大，大概500W条记录
- - 查询时不能查太多，否则会锁表
-
-正常解决方法是我们需要在cli 终端下分批次执行，很麻烦。用此脚本配置好后，可以实现自动化执行。<br>
-##执行效果
-
->``The Nums is :14000  15000`` <br>
-``The Nums is :15000  16000 ``<br>
-SELECT id,content FROM news_info WHERE output_status=1 AND content!='' AND (`id` > 14000 AND `id` < 1000) ORDER BY id ASC<br>
-SELECT id,content FROM news_info WHERE output_status=1 AND content!='' AND (`id` > 15000 AND `id` < 1000) ORDER BY id ASC<br><br>
-``The Nums is :140000  150000``<br>
-``The Nums is :150000  160000``<br>
-SELECT id,content FROM comment WHERE output_status=1 AND content!='' AND (`id` > 140000 AND `id` < 10000) ORDER BY id ASC<br>
-SELECT id,content FROM comment WHERE output_status=1 AND content!='' AND (`id` > 150000 AND `id` < 10000) ORDER BY id ASC<br>
-......<br>
-......<br>
-
+    - 支持多任务
+    - 可配置运行间歇
+    - 支持多种类型脚本，目前仅支持Shell 和PHP
+    - 无人值守
 
 
 <br>
-#Notice！
-
-
-First Create the necessary folders:
-- ```runtime```  to save all the run logs;
-- `pipe`     to save the task pipes;
-
-<br>
->##1）run the script
-
-```$ /bin/bash main.sh```
-
-Output String：
-
->=============================================<br>
-Auto task System<br>
-=============================================<br>
-Welcome to auto task, Please Choice a options:<br>
---------------------------------------------------------------------------<br>
-a) kill all the running script<br>
-b) direct run the task list<br>
-c) kill all script and run<br>
-
-
-<br><br>
->##2) Introduce Structure
+###目录结构
 
 	- main.sh   main
 	- task.sh
@@ -80,25 +20,68 @@ c) kill all script and run<br>
 	- pipe		folder, pipe list
 	- README.txt
 
-<br><br>
->##3) Introduce the Task Config
+<br>
+###配置文件介绍
 
-such as the task config:  ```cat ./task/comment```
+``$ cat ./task/comment``
 
-> \#[Script Type]<br>
- itype=php<br><br>
-\#[program absloute path]<br>
-ipath=/export/home/www/testProject/2.php<br><br>
-\#[start record]<br>
-istart=0<br><br>
-\#[end record]<br>
-iend=500000<br><br>
-\#[step]<br>
-istep=1000<br><br>
-\#[run thread]<br>
-ithread=3
+    #[Script Type]<br>
+     itype=php
 
-<br><br><br>
-###That all, Thank you !
-<br><br><br>
+    #[program absloute path]
+    ipath=/export/home/www/testProject/2.php
 
+    #[start record]
+    istart=0
+
+    #[end record]
+    iend=500000
+
+    #[step]
+    istep=1000
+
+    #[run thread]
+    ithread=3
+
+
+
+<br>
+###[如何使用]
+
+####1、创建需要的文件夹
+    - runtime
+    - pipe
+
+
+####2、运行脚本
+
+``$ /bin/bash main.sh``
+
+    =============================================
+    Auto task System
+    =============================================
+    Welcome to auto task, Please Choice a options:
+    ---------------------------------------------
+    a) kill all the running script
+    b) direct run the task list
+    c) kill all script and run
+
+
+
+<br>
+####3、运行效果
+`` The Nums is :14000  15000``<br>
+``The Nums is :15000  16000 ``
+
+    SELECT id FROM news WHERE status=1 AND content!='' AND (`id` > 14000 AND `id` < 1000) ORDER BY id ASC
+    SELECT id FROM news_info WHERE status=1 AND content!='' AND (`id` > 15000 AND `id` < 1000) ORDER BY id ASC<br><br>
+
+
+``The Nums is :140000  150000``<br>
+``The Nums is :150000  160000``
+
+    SELECT id FROM comment WHERE status=1 AND content!='' AND (`id` > 140000 AND `id` < 10000) ORDER BY id ASC
+    SELECT id FROM comment WHERE status=1 AND content!='' AND (`id` > 150000 AND `id` < 10000) ORDER BY id ASC
+    ......
+
+Over！
