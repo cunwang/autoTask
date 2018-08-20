@@ -1,27 +1,45 @@
 #!/bin/bash
 # ---------------------------------- ------------- +
-# file: pub_func 程序公用方法
+# file: pub_func 
 # ------------------------------------------------ +
-# @todo 提供公用方法
-# @abstract 
-# @author CMS.wangcun 
-# @mail 1541231755@qq.com
+# @author <github.com/cunwang>
 # @date	2015/03/16 - 03/20
-# @version 2.2 
-# @useage: . ./pub_func
+# @edit date	2018/08/17
+# @version 2.3 
 # ------------------------------------------------ +
 
+:<<!
+Debug Model, To be extended
+!
 IS_DEBUG=0; 
-TASK_MAX_THREAD=2; #max thread of one task
-TASK_MAX_NUM=2; #max of the task list
-CONFIG_NAME="./config"; #config file path of task 
-CONFIG_TASK_PATH="./task/"; #task more config path
-CONFIG_LOG_PATH="./runtime/"; #log file save path
+
+:<<!
+Max thread , 
+If Thread nums bigger than the Max Thread will be ignore. 
+!
+TASK_MAX_THREAD=2;
+
+:<<!
+Number of tasks supported at the same time.
+According to the actual situation of rational allocation, default 2.
+!
+TASK_MAX_NUM=2;
+
+:<<!
+Default Config Path.
+!
+PHP_BIN_PATH="/opt/php5/bin/php";
+SHELL_BIN_PATH="/bin/bash";
+CONFIG_NAME="./config";
+CONFIG_TASK_PATH="./task/";
+CONFIG_LOG_PATH="./runtime/";
 CONFIG_PIPE_PATH="./pipe/";
 CONFIG_CORE_SCRIPT="task.sh";
 HANDLE_FLAG=1;
 
-#initliaze AND set default value
+:<<!
+Variable initialization.
+!
 script_type=0;
 script_path=0;
 script_start=0;
@@ -29,11 +47,20 @@ script_end=0;
 script_step=1;
 script_thread=2
 
+:<<!
+[Function] 
+@abstract, Recorded String to file
+@params, $1 String
+@usage
+	> log_it "record something."
+!
 function log_it()
 {
-	local now="`date +'%Y-%m-%d %H:%M:%S'`";
-	local logName="`date +'%Y%m%d'`-run.log";
-	echo -e "${now}\t${1}" >>  "${CONFIG_LOG_PATH}${logName}";
+	if [ $IS_DEBUG -eq 1 ]; then
+		local now="`date +'%Y-%m-%d %H:%M:%S'`";
+		local logName="`date +'%Y%m%d'`-run.log";
+		echo -e "${now}\t${1}" >>  "${CONFIG_LOG_PATH}${logName}";
+	fi
 }
 
 function getInterpreter()
@@ -41,26 +68,28 @@ function getInterpreter()
 	local interPreter="";
 	case "$1" in
 		php)
-			interPreter="/opt/php5/bin/php";	
+			interPreter=${PHP_BIN_PATH};
 		;;
 
 		shell)
-			interPreter="/bin/bash";	
+			interPreter=${SHELL_BIN_PATH};
 		;;
 	esac
-	throw "$interPreter";
+	throw "${interPreter}";
 }
 
 function debug()
 {
-	echo -e "\033[31;31merror: [@ Line $LINENO] Error: Command or function exited width status $?!\033[0m";
+	log_it "\033[31;31merror: [@ Line $LINENO] Error: Command or function exited width status $?!\033[0m";
 }
+
 function killAll()
 {
 	/bin/rm "${CONFIG_PIPE_PATH}*";
-	/bin/ps ajx | grep "${CONFIG_CORE_SCRIPT}" | 
-								  grep -v grep | 
-							  awk '{print $2}' | 
+	/bin/ps ajx | 
+		grep "${CONFIG_CORE_SCRIPT}" | 
+			grep -v grep | 
+				awk '{print $2}' | 
 					while read subThread; 
 					do 	
 						echo "will kill the thread :${subThread}"; 

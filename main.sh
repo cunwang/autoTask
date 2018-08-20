@@ -1,41 +1,43 @@
 #!/bin/bash
-# ---------------------------------- ------------- +
-# file: main.sh 自动任务队列脚本入口 
 # ------------------------------------------------ +
-# @todo 用于无人值守跑脚本
-# @abstract 支持配置多任务、多进程、日志记录、Kill
-# @author CMS.wangcun 
-# @mail 1541231755@qq.com
+# file: main.sh 
+# ------------------------------------------------ +
+# @author <github.com/cunwang>
 # @date	2015/03/16 - 03/20
-# @version 2.2 
-# @useage : /bin/bash main.sh
+# @edit date 2018/08/17
+# @version 2.3 
+# @useage
+# 	> /bin/bash main.sh
 # ------------------------------------------------ +
+
 . ./pub_func
+
 function help ()
 {
 clear
 echo  -e "\n====================================\n\
 	Auto task System\n\
 ====================================\n\
-\nWelcome to auto task, Please Choice a options:\n \
+\nWelcome, Please Choice a options:\n \
 ------------------\n \
-a) kill all the running script\n \
-b) direct run the task list\n \
-c) kill all script and run\
+a|A) kill all the running script\n \
+b|B) direct run the task list\n \
+c|C) kill all script and run\
 \n\n ";
 }
+
 function choice ()
 {
 	help
 	read -p "Please Choice:" -n 1 Choice;
 	case "$Choice" in
-		a)
+		a|A)
 			killAll;
 		;;
-		b)
+		b|B)
 			monitor;	
 		;;
-		c)
+		c|C)
 			killAll;
 			[ $? -eq 0 ] && monitor;
 		;;
@@ -44,14 +46,13 @@ function choice ()
 
 function monitor ()
 {
-	throw "\n[log] load config!";
 	read_config
 	local is_view;
 	local task_name;
 	local parse_data;
 	local view_str='';
 	local counter=0;
-	[ -e $CONFIG_NAME -a $HANDLE_FLAG -eq 0 ] && throw '[log] loaded and start to parse config!' || iexit;
+	[ -e $CONFIG_NAME -a $HANDLE_FLAG -eq 0 ] && throw '[log] Script start!' || iexit;
 
 	cat $CONFIG_NAME | while read line
 	do
@@ -64,20 +65,20 @@ function monitor ()
 		is_view=`echo $line		| awk -F "|" '{print $2}'`;
 		[ $is_view -eq 0 ] && continue;
 		
-		#check is more than the biggest task queue, more will be ignore
 		((counter++))
 	   	if [ $counter -gt $TASK_MAX_NUM ]; then
-			view_str="[err-log] More than the biggeset task queue (${TASK_MAX_NUM}) And Current Task (${task_name})  will be ignore!";
-			throw "$view_str";
+			view_str="[err-log] More than the biggeset task queue (${TASK_MAX_NUM}), task (${task_name})  will be ignore!";
+#throw "$view_str";
 			log_it "$view_str";
 			continue;
 		fi
 
-		#run task
+:<<!
+Dispatched task and execute.
+!
 		parse_data=$(parse_config "${CONFIG_TASK_PATH}${task_name}" "${task_name}");
 		run_task "${parse_data}" "${task_name}";
 	done;
-	#unset $is_view; unset $task_name; unset $parse_data;
 }
 
 function read_config()
@@ -109,8 +110,7 @@ function parse_config ()
 function run_task ()
 {
 	local taskPipeName;
-	throw "[log] run task: ${1}";
-	log_it "/bin/bash ${CONFIG_CORE_SCRIPT} ${1} ${2} ${taskPipeName}\n";
+	log_it "[log] run task: /bin/bash ${CONFIG_CORE_SCRIPT} ${1} ${2} ${taskPipeName}";
 	taskPipeName=$(getPipeByTask "$2");
 	{
 		echo "${2}"	> ${taskPipeName};
@@ -127,9 +127,7 @@ function main()
 	choice;
 }
 
-#trap bug
 trap 'debug $LINENO' ERR
 trap 'debug $LINENO' EXIT
 
-#start
 main
