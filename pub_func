@@ -85,7 +85,10 @@ function debug()
 
 function killAll()
 {
-	/bin/rm "${CONFIG_PIPE_PATH}*";
+	if [ "`ls -A ${CONFIG_PIPE_PATH}`" != "" ]; then
+		/bin/rm ${CONFIG_PIPE_PATH}*;
+	fi
+
 	/bin/ps ajx | 
 		grep "${CONFIG_CORE_SCRIPT}" | 
 			grep -v grep | 
