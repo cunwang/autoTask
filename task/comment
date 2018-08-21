@@ -2,16 +2,16 @@
 itype=php
 
 #[program absloute path]
-ipath=/export/home/www/testProject/2.php
+ipath=/root/www/shell/autoTask/testProject/1.php
 
 #[start record]
-istart=0
+istart=2018-08-01
 
 #[end record]
-iend=500000
+iend=2018-08-13
 
 #[step]
-istep=1000
+istep=86400
 
 #[run thread]
-ithread=3
+ithread=2

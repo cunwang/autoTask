@@ -68,16 +68,15 @@ function monitor ()
 		((counter++))
 	   	if [ $counter -gt $TASK_MAX_NUM ]; then
 			view_str="[err-log] More than the biggeset task queue (${TASK_MAX_NUM}), task (${task_name})  will be ignore!";
-#throw "$view_str";
 			log_it "$view_str";
 			continue;
-		fi
-
+		else
 :<<!
 Dispatched task and execute.
 !
-		parse_data=$(parse_config "${CONFIG_TASK_PATH}${task_name}" "${task_name}");
-		run_task "${parse_data}" "${task_name}";
+			parse_data=$(parse_config "${CONFIG_TASK_PATH}${task_name}" "${task_name}");
+			run_task "${parse_data}" "${task_name}";
+		fi
 	done;
 }
 
