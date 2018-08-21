@@ -55,6 +55,7 @@ script_end=0;
 script_step=1;
 script_thread=2;
 
+
 :<<!
 [Function] 
 @abstract, Recorded String to file
@@ -136,6 +137,13 @@ function getPipeByTask ()
 	task_pipe="${CONFIG_PIPE_PATH}${1}.fifo";
 	createPipe "${task_pipe}";
 	throw ${task_pipe};
+}
+
+function check_env()
+{
+	[[ ! -d "${CONFIG_NAME}" ]] && throwANDexit "Config folder not exists, please check!";
+	[[ ! -d "${CONFIG_LOG_PATH}" ]] && throwANDexit "runtime folder not exists, please check!";
+	[[ ! -d "${CONFIG_PIPE_PATH}" ]] && throwANDexit "pipe folder not exists, please check!";
 }
 
 function createPipe()

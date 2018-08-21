@@ -123,6 +123,7 @@ function run_task ()
 
 function main()
 {
+	check_env;
 	choice;
 }
 
