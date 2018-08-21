@@ -1,17 +1,17 @@
 #!/bin/bash
-# ---------------------------------- ------------- +
+# ------------------------------------------------ +
 # file: pub_func 
 # ------------------------------------------------ +
 # @author <github.com/cunwang>
 # @date	2015/03/16 - 03/20
 # @edit date	2018/08/17
-# @version 2.3 
+# @version 1.2
 # ------------------------------------------------ +
 
 :<<!
-Debug Model, To be extended
+Debug Model, To be extended, default 0.
 !
-IS_DEBUG=1;
+IS_DEBUG=0;
 
 :<<!
 Max thread , 
@@ -156,7 +156,7 @@ function step_model_valid()
 		_MAX=`date -d "${_MAX}" +%s`
 
 		if [[ `expr $STEP % $STEP_DATE_BASE` != 0 ]]; then
-			throwANDexit "日期step必须要能整除${STEP_DATE_BASE}!"
+			throwANDexit "Date type Script step must be divisible by ${STEP_DATE_BASE}!"
 		fi
 	fi
 

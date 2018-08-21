@@ -6,7 +6,7 @@
 # @author <github.com/cunwang>
 # @date	2015/03/16 - 03/20
 # @edit date	2018/08/17
-# @version 2.3 
+# @version 1.2
 # ------------------------------------------------ +
 
 TaskName=$2
