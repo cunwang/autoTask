@@ -141,7 +141,7 @@ function getPipeByTask ()
 
 function check_env()
 {
-	[[ ! -d "${CONFIG_NAME}" ]] && throwANDexit "Config folder not exists, please check!";
+	[[ ! -f "${CONFIG_NAME}" ]] && throwANDexit "File config not exists, please check!";
 	[[ ! -d "${CONFIG_LOG_PATH}" ]] && throwANDexit "runtime folder not exists, please check!";
 	[[ ! -d "${CONFIG_PIPE_PATH}" ]] && throwANDexit "pipe folder not exists, please check!";
 }
