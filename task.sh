@@ -35,6 +35,15 @@ throw "[core-log] ${TaskName}\t${TaskPipe}\t${TaskMoreInfo}\n";
 
 parseParam
 
+START=${script_start};
+STEP=${script_step};
+LIMIT=${script_step}
+_MAX=${script_end};
+S=0;
+NEXT=0;
+SCRIPT_BIN=${script_type};
+
+step_model_valid
 
 :<<!
 If amount of task  thread bigger than system configed（$TASK_MAX_THREAD）, 
@@ -46,6 +55,8 @@ if [ ${SEND_THREAD_NUM} -gt ${TASK_MAX_THREAD} ]; then
 	log_it "[err-log] The current Task (${TaskName}) set more than the maximum value of thread! system will use the default! ";
 fi
 
+echo ${SORT_MODEL}
+#iexit
 tmp_fifofile=$TaskPipe;
 [ ! -e "$tmp_fifofile" ] && throwANDexit "pipe not found!";
 exec 6<>"$tmp_fifofile"
@@ -54,26 +65,33 @@ for ((i=0; i<$SEND_THREAD_NUM; i++));do
   echo                                                                                    
 done >&6 
 
-START=${script_start};
-STEP=${script_step};
-LIMIT=${script_step}
-_MAX=${script_end};
-S=0;
-NEXT=0;
-SCRIPT_BIN=${script_type};
-
-#execute task
+:<<!
+Core function, Execute Task.
+!
 while true;
 do
 	let S=$START;
-	((NEXT=S + STEP));
-	[ "${S}" -gt "${_MAX}" ] && exit -1;
+	if [ "${SORT_MODEL}" == "asc" ]; then
+		((NEXT=S + STEP));
+		[ "${S}" -gt "${_MAX}" ] && iexit;
+	else
+		((NEXT=S - STEP));
+		[ "${S}" -lt "${_MAX}" ] && iexit;
+	fi
+
 	read -u6 
 	{
-		echo -e "The Nums is :${S}  ${NEXT}\t";
-		${SCRIPT_BIN} ${script_path} ${S} ${LIMIT} ${TaskPipe}
+		if [ $STEP_MODEL == "date" ]; then
+			DAYS=`date -d @"${S}" "+$STEP_DATE_FORMAT"`;
+			${SCRIPT_BIN} ${script_path} ${DAYS} ${TaskPipe}
+		else
+			echo "${SCRIPT_BIN} ${script_path} ${S} ${LIMIT} ${TaskPipe}";
+			${SCRIPT_BIN} ${script_path} ${S} ${LIMIT} ${TaskPipe}
+		fi
 	} &
 	((START=NEXT));
 done
 wait
 exec 6>&-
+
+echo "All job done!";

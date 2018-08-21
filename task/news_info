@@ -2,13 +2,13 @@
 itype=php
 
 #[program absloute path]
-ipath=/export/home/www/testProject/1.php
+ipath=/root/www/shell/autoTask/testProject/2.php
 
 #[start record]
-istart=0
+istart=1
 
 #[end record]
-iend=1000000
+iend=9000
 
 #[step]
 istep=1000

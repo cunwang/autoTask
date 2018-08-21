@@ -11,7 +11,7 @@
 :<<!
 Debug Model, To be extended
 !
-IS_DEBUG=0; 
+IS_DEBUG=1;
 
 :<<!
 Max thread , 
@@ -26,26 +26,34 @@ According to the actual situation of rational allocation, default 2.
 TASK_MAX_NUM=2;
 
 :<<!
-Default Config Path.
+Set Default Config Path.
 !
-PHP_BIN_PATH="/opt/php5/bin/php";
+PHP_BIN_PATH="/usr/local/php/bin/php";
 SHELL_BIN_PATH="/bin/bash";
 CONFIG_NAME="./config";
 CONFIG_TASK_PATH="./task/";
 CONFIG_LOG_PATH="./runtime/";
 CONFIG_PIPE_PATH="./pipe/";
 CONFIG_CORE_SCRIPT="task.sh";
-HANDLE_FLAG=1;
 
 :<<!
 Variable initialization.
 !
+HANDLE_FLAG=1;
+SORT_MODEL='';
+DAYS='';
+STEP_MODEL='int';
+STEP_DATE_BASE=3600;
+STEP_DATE_FORMAT="%Y-%m-%d";
+STEP_NUM_BASE=1;
+DATE_REGEXP="^[0-9]{4}[-/][0-9]{2}[-/][0-9]{2}";
+
 script_type=0;
 script_path=0;
 script_start=0;
 script_end=0;
 script_step=1;
-script_thread=2
+script_thread=2;
 
 :<<!
 [Function] 
@@ -85,7 +93,7 @@ function debug()
 
 function killAll()
 {
-	if [ "`ls -A ${CONFIG_PIPE_PATH}`" != "" ]; then
+	if [ "`ls -A ${CONFIG_PIPE_PATH}`" != "" ]; then 
 		/bin/rm ${CONFIG_PIPE_PATH}*;
 	fi
 
@@ -138,4 +146,19 @@ function createPipe()
 	else
 		log_it "[log] ${1} is exists!";
 	fi
+}
+
+function step_model_valid()
+{
+	if [[ "$START" =~ $DATE_REGEXP ]] && [[ "$_MAX" =~ $date_preg ]]; then
+		STEP_MODEL='date';
+		START=`date -d "${START}" +%s`
+		_MAX=`date -d "${_MAX}" +%s`
+
+		if [[ `expr $STEP % $STEP_DATE_BASE` != 0 ]]; then
+			throwANDexit "日期step必须要能整除${STEP_DATE_BASE}!"
+		fi
+	fi
+
+	[[ "${START}" -gt "${_MAX}" ]] && SORT_MODEL='desc' || SORT_MODEL='asc';
 }
