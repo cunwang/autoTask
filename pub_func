@@ -92,12 +92,15 @@ function debug()
 	log_it "\033[31;31merror: [@ Line $LINENO] Error: Command or function exited width status $?!\033[0m";
 }
 
+function clearPipes()
+{
+    if [ "`ls -A ${CONFIG_PIPE_PATH}`" != "" ]; then
+        /bin/rm ${CONFIG_PIPE_PATH}*;
+    fi
+}
+
 function killAll()
 {
-	if [ "`ls -A ${CONFIG_PIPE_PATH}`" != "" ]; then 
-		/bin/rm ${CONFIG_PIPE_PATH}*;
-	fi
-
 	/bin/ps ajx | 
 		grep "${CONFIG_CORE_SCRIPT}" | 
 			grep -v grep | 
@@ -107,6 +110,7 @@ function killAll()
 						echo "will kill the thread :${subThread}"; 
 						killTask $subThread
 					done;
+	clearPipes;
 	throw "All the Task is Stop!";
 }
 

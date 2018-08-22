@@ -124,6 +124,7 @@ function run_task ()
 function main()
 {
 	check_env;
+	clearPipes;
 	choice;
 }
 
