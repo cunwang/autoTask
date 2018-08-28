@@ -109,14 +109,14 @@ function parse_config ()
 function run_task ()
 {
 	local taskPipeName;
-	log_it "[log] run task: /bin/bash ${CONFIG_CORE_SCRIPT} ${1} ${2} ${taskPipeName}";
+	log_it "[log] run task: ${SHELL_BIN_PATH} ${CONFIG_CORE_SCRIPT} ${1} ${2} ${taskPipeName}";
 	taskPipeName=$(getPipeByTask "$2");
 	{
 		echo "${2}"	> ${taskPipeName};
 	} &
 
 	{	
-		/bin/bash ${CONFIG_CORE_SCRIPT} "${1}" "${2}" "${taskPipeName}"
+		${SHELL_BIN_PATH} ${CONFIG_CORE_SCRIPT} "${1}" "${2}" "${taskPipeName}"
 		iexit
 	} &
 }
